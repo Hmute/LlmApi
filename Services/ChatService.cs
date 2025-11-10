@@ -18,17 +18,24 @@ public class ChatService
         var uri = config["AI:Endpoint"]!;
         var githubPAT = config["AI:PAT"]!;
 
-            if (string.IsNullOrWhiteSpace(modelId) ||
-        string.IsNullOrWhiteSpace(uri) ||
-        string.IsNullOrWhiteSpace(githubPAT))
-    {
-        throw new InvalidOperationException(
-            "Missing required AI configuration. Check Azure Application Settings.");
-    }
+        if (string.IsNullOrWhiteSpace(modelId) ||
+    string.IsNullOrWhiteSpace(uri) ||
+    string.IsNullOrWhiteSpace(githubPAT))
+        {
+            throw new InvalidOperationException(
+                "Missing required AI configuration. Check Azure Application Settings.");
+        }
+
+        Console.WriteLine($"[DEBUG] Using endpoint: {uri}");
+        Console.WriteLine($"[DEBUG] Using model: {modelId}");
+        Console.WriteLine($"[DEBUG] Token length: {githubPAT?.Length}");
 
         var client = new OpenAIClient(
-            new ApiKeyCredential(githubPAT),
-            new OpenAIClientOptions { Endpoint = new Uri(uri) });
+            new ApiKeyCredential(githubPAT.Trim()),
+            new OpenAIClientOptions
+            {
+                Endpoint = new Uri(uri),
+            });
 
         var builder = Kernel.CreateBuilder();
         builder.AddOpenAIChatCompletion(modelId, client);
