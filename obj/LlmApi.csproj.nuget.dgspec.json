@@ -52,7 +52,7 @@
           "dependencies": {
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[9.0.3, )"
+              "version": "[8.0.8, )"
             },
             "Microsoft.SemanticKernel": {
               "target": "Package",
@@ -62,9 +62,9 @@
               "target": "Package",
               "version": "[2.6.0, )"
             },
-            "SwashBuckle.AspNetCore": {
+            "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[9.0.6, )"
+              "version": "[6.5.0, )"
             },
             "System.ClientModel": {
               "target": "Package",
