@@ -1,4 +1,3 @@
-C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\bin\Debug\net9.0\appsettings.json
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\bin\Debug\net9.0\LlmApi.staticwebassets.endpoints.json
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\bin\Debug\net9.0\LlmApi.exe
@@ -41,6 +40,7 @@ C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.csproj.CoreCompileInputs.cache
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.sourcelink.json
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\scopedcss\bundle\LlmApi.styles.css
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\staticwebassets.development.json
@@ -57,4 +57,3 @@ C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.pdb
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.genruntimeconfig.cache
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\ref\LlmApi.dll
-C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.sourcelink.json
