@@ -3,6 +3,14 @@ using Microsoft.OpenApi.Models;     // for Swagger
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ✅ DEBUG: Check if environment variables are being read
+Console.WriteLine("====================================");
+Console.WriteLine("🔍 Configuration check (from Azure):");
+Console.WriteLine("Model: " + builder.Configuration["AI:Model"]);
+Console.WriteLine("Endpoint: " + builder.Configuration["AI:Endpoint"]);
+Console.WriteLine("PAT exists: " + !string.IsNullOrEmpty(builder.Configuration["AI:PAT"]));
+Console.WriteLine("====================================");
+
 // -----------------------------
 // Add services to the container
 // -----------------------------
