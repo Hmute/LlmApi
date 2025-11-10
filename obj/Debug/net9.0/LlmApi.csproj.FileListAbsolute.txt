@@ -57,3 +57,4 @@ C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.pdb
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.genruntimeconfig.cache
 C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\ref\LlmApi.dll
+C:\Users\Intracta\Documents\BCIT\Term4\COMP4977\Assigment2\LlmApi\obj\Debug\net9.0\LlmApi.sourcelink.json
