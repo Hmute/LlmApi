@@ -2,23 +2,43 @@
 //  AIViewViewModel.swift
 //  Assignment2
 //
-//  Created by Mitchell MacDonald on 2025-11-14.
-//
 
-import Foundation
-import FirebaseFirestore
-import Foundation
+import SwiftUI
 import Combine
 import FirebaseAuth
+import FirebaseFirestore
+
+@MainActor
 class AIViewViewModel: ObservableObject {
-    @Published var email = ""
-    @Published var password = ""
-    @Published var errMsg = ""
-    @Published var showingNewItemView = false
-    private let _userId: String
+    
+    // Existing requirement: keep userId
+    private let userId: String
+    
+    // New AI properties
+    @Published var prompt: String = ""
+    @Published var response: String = ""
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: String = ""
+    
+    private let service = ChatService()
+    
     init(userId: String) {
-        _userId = userId
+        self.userId = userId
     }
     
-    
+    func askAI() {
+        Task {
+            isLoading = true
+            errorMessage = ""
+            
+            do {
+                let reply = try await service.sendPrompt(prompt)
+                response = reply
+            } catch {
+                errorMessage = "Error: \(error.localizedDescription)"
+            }
+            
+            isLoading = false
+        }
+    }
 }
