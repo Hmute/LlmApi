@@ -1430,31 +1430,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Intracta\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/mmacdonald157/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Intracta\\Documents\\BCIT\\Term4\\COMP4977\\Assigment2\\LlmApi\\LlmApi.csproj",
+      "projectUniqueName": "/Users/mmacdonald157/Comp 4977/Ass2/LlmApi/LlmApi.csproj",
       "projectName": "LlmApi",
-      "projectPath": "C:\\Users\\Intracta\\Documents\\BCIT\\Term4\\COMP4977\\Assigment2\\LlmApi\\LlmApi.csproj",
-      "packagesPath": "C:\\Users\\Intracta\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Intracta\\Documents\\BCIT\\Term4\\COMP4977\\Assigment2\\LlmApi\\obj\\",
+      "projectPath": "/Users/mmacdonald157/Comp 4977/Ass2/LlmApi/LlmApi.csproj",
+      "packagesPath": "/Users/mmacdonald157/.nuget/packages/",
+      "outputPath": "/Users/mmacdonald157/Comp 4977/Ass2/LlmApi/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Intracta\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/mmacdonald157/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1473,7 +1467,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net9.0": {
@@ -1519,7 +1513,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
