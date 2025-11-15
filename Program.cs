@@ -16,6 +16,17 @@ Console.WriteLine("====================================");
 // -----------------------------
 builder.Services.AddControllers();
 
+// Add CORS for iOS/Android/Frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Swagger & API explorer
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
