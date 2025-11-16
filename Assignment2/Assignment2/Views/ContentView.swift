@@ -34,6 +34,10 @@ struct ContentView: View {
                     .tabItem {
                         Label("Profile", systemImage: "person.circle")
                     }
+                AboutView()
+                    .tabItem {
+                        Label("About", systemImage: "info.circle")
+                }
             }
         }
     }
