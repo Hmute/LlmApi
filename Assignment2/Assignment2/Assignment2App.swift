@@ -2,24 +2,20 @@
 //  Assignment2App.swift
 //  Assignment2
 //
-//  Created by Mitchell MacDonald on 2025-11-14.
+//  Created by  Amal Allaham on 2025-11-14.
 //
 
 import SwiftUI
-import FirebaseCore
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        FirebaseApp.configure()
-        return true
-    }
-}
 @main
 struct Assignment2App: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject var session = SessionManager()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(session)
+
         }
     }
 }
+

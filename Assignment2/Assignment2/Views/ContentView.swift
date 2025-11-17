@@ -1,40 +1,47 @@
 //
 //  ContentView.swift
-//  TodoListApp
+//  Assignment 2
 //
-//  Created by Mitchell MacDonald on 2025-10-17.
+//  Created by Amal Allaham on 2025-11-16.
 //
 
 import SwiftUI
 
-
 struct ContentView: View {
     @StateObject var viewModel = ContentViewViewModel()
+    @EnvironmentObject var session: SessionManager
+
+    
     var body: some View {
-        if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
-            accountView
-        } else {
-            LoginView()
+        Group {
+            if session.isSignedIn {
+                accountView
+            } else {
+                LoginView()
+            }
+        }
+        .onAppear {
+            session.loadSession()
         }
     }
     
     @ViewBuilder
     var accountView: some View {
-        VStack {
-            TabView {
-                HomeView(userId: viewModel.currentUserId)
-                    .tabItem {
-                        Label("Home", systemImage: "house")
-                    }
-                AIView(userId: viewModel.currentUserId)
-                    .tabItem {
-                        Label("AI", systemImage: "star.fill")
-                    }
-                ProfileView()
-                    .tabItem {
-                        Label("Profile", systemImage: "person.circle")
-                    }
-            }
+        TabView {
+            HomeView()
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+            
+            AIView(userId: viewModel.currentUserEmail)
+                .tabItem {
+                    Label("AI", systemImage: "star.fill")
+                }
+            
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle")
+                }
         }
     }
 }

@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using LlmApi.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LlmApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
+
 public class ChatController : ControllerBase
 {
     private readonly ChatService _chatService;

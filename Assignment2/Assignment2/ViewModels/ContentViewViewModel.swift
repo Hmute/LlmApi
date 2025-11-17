@@ -1,24 +1,34 @@
 //
 //  ContentViewViewModel.swift
-//  TodoListApp
+//  Assignment 2
 //
-//  Created by Mitchell MacDonald on 2025-10-17.
+//  Created by Amal Allaham on 2025-11-16.
 //
 
 import Foundation
-import FirebaseAuth
 import Combine
+
 class ContentViewViewModel: ObservableObject {
-    @Published var currentUserId: String = ""
-    private var handler: AuthStateDidChangeListenerHandle?
+    @Published var currentUserEmail: String = ""
+    @Published var isSignedIn: Bool = false
+
     init() {
-        self.handler = Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            DispatchQueue.main.async {
-                self?.currentUserId = user?.uid ?? ""
-            }
-        }
+        loadSession()
     }
-    public var isSignedIn: Bool {
-        return Auth.auth().currentUser != nil
+    
+    func loadSession() {
+        let token = UserDefaults.standard.string(forKey: "authToken") ?? ""
+        let email = UserDefaults.standard.string(forKey: "userEmail") ?? ""
+        
+        isSignedIn = !token.isEmpty
+        currentUserEmail = email
+    }
+    
+    func signOut() {
+        UserDefaults.standard.removeObject(forKey: "authToken")
+        UserDefaults.standard.removeObject(forKey: "userEmail")
+        
+        isSignedIn = false
+        currentUserEmail = ""
     }
 }

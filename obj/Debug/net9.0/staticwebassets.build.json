@@ -1,12 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "Y5hSNXmK61uMzY+UhRQhTUOy0Sgq9vcJQyuBwWe6E0E=",
-  "Source": "LlmApi",
-  "BasePath": "_content/LlmApi",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
-}
+{"Version":1,"Hash":"B/b/BZe3XR62VaZ37IQN6M8F9fxbP/DOHIeDRIYDzu0=","Source":"LlmApi","BasePath":"/","Mode":"Root","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

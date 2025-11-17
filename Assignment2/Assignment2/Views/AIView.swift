@@ -7,10 +7,11 @@ import SwiftUI
 
 struct AIView: View {
     @StateObject var viewModel: AIViewViewModel
-    
+    @EnvironmentObject var session: SessionManager
+
     init(userId: String) {
         self._viewModel = StateObject(
-            wrappedValue: AIViewViewModel(userId: userId)
+            wrappedValue: AIViewViewModel(userId: userId, session: SessionManager())
         )
     }
 

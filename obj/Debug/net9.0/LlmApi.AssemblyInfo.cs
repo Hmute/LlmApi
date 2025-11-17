@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LlmApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4f3eda6c56628b5282a85ce270b7ed2ce1de742")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8520c3a4e30d4592a8ee75580139c3edfbd6fcf8")]
 [assembly: System.Reflection.AssemblyProductAttribute("LlmApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LlmApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,22 +1,23 @@
 //
 //  LogoutViewViewModel.swift
-//  TodoListApp
+//  Assignment 2
 //
-//  Created by Mitchell MacDonald on 2025-10-31.
+//  Created by Amal Allaham on 2025-11-15.
 //
 
 import Foundation
-import Foundation
-import FirebaseAuth
 import Combine
-class LogoutViewViewModel : ObservableObject {
-    init() {}
+
+
+@MainActor
+class LogoutViewViewModel: ObservableObject {
+
+    @Published var isLoggedOut = false
+
     func logout() {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
-        }
+        // Remove the JWT token
+        UserDefaults.standard.removeObject(forKey: "authToken")
+
+        isLoggedOut = true
     }
 }

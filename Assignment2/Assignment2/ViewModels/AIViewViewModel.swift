@@ -5,12 +5,10 @@
 
 import SwiftUI
 import Combine
-import FirebaseAuth
-import FirebaseFirestore
 
 @MainActor
 class AIViewViewModel: ObservableObject {
-    
+    private let session: SessionManager
     // Existing requirement: keep userId
     private let userId: String
     
@@ -22,15 +20,17 @@ class AIViewViewModel: ObservableObject {
     
     private let service = ChatService()
     
-    init(userId: String) {
+    init(userId: String, session: SessionManager) {
         self.userId = userId
+        self.session = session
+
     }
     
     func askAI() {
         Task {
             isLoading = true
             errorMessage = ""
-            
+            service.token = session.token
             do {
                 let reply = try await service.sendPrompt(prompt)
                 response = reply

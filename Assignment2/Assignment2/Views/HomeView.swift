@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
-import FirebaseFirestore
 struct HomeView: View {
-    @StateObject var viewModel: HomeViewViewModel
-    init(userId: String) {
-        self._viewModel = StateObject(
-            wrappedValue: HomeViewViewModel(userId: userId)
-        )
-    }
+//    @StateObject var viewModel: HomeViewViewModel
+//    init(userId: String) {
+//        self._viewModel = StateObject(
+//            wrappedValue: HomeViewViewModel(userId: userId)
+//        )
+//    }
     var body: some View {
         VStack {
             Text("Home")
@@ -26,7 +25,7 @@ struct HomeView: View {
     }
 
    
-    #Preview {
-        HomeView(userId: "3MXygibdHEPn5I0QSBsyzltbL1Q2")
-    }
+//    #Preview {
+//        HomeView(userId: "3MXygibdHEPn5I0QSBsyzltbL1Q2")
+//    }
 }
