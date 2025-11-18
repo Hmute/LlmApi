@@ -22,6 +22,11 @@ struct HomeView: View {
                 .padding(.top, 20)
             
             Spacer()
+             Text("Welcome to our AI App")
+                .font(.title2)
+                .multilineTextAlignment(.center)
+
+            Spacer()
         }
     }
 
