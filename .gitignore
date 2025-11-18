@@ -15,6 +15,7 @@ appsettings.*.json
 *.db
 *.bak
 
+
 # Rider / VSCode
 .idea/
 .vscode/
