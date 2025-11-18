@@ -1,2 +1,91 @@
-appsettings.Development.json
+###############################################
+# .NET BACKEND (LlmApi)
+###############################################
+bin/
+obj/
 appsettings.json
+appsettings.Development.json
+appsettings.*.json
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+*.tmp
+*.db
+*.bak
+
+# Rider / VSCode
+.idea/
+.vscode/
+
+###############################################
+# SWIFT / XCODE (Assignment2)
+###############################################
+
+# Xcode build output
+build/
+DerivedData/
+
+# Xcode user-specific data (never commit)
+*.xcuserdatad/
+*.xcuserdata/
+*.xcuserstate
+xcuserdata/
+xcshareddata/
+
+# Xcode project backups / internal files
+*.pbxuser
+*.perspectivev3
+*.moved-aside
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build/
+
+# iOS Archive files
+*.xcarchive
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+###############################################
+# SYSTEM & OS FILES
+###############################################
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+desktop.ini
+
+###############################################
+# NODE / WEB (just in case)
+###############################################
+node_modules/
+dist/
+
+###############################################
+# ENVIRONMENT FILES (never push secrets)
+###############################################
+.env
+.env.local
+.env.development
+.env.production
+
+###############################################
+# TEMP FILES
+###############################################
+*.tmp
+*.swp
+*.lock
