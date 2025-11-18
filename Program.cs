@@ -11,6 +11,9 @@ Console.WriteLine("Endpoint: " + builder.Configuration["AI:Endpoint"]);
 Console.WriteLine("PAT exists: " + !string.IsNullOrEmpty(builder.Configuration["AI:PAT"]));
 Console.WriteLine("====================================");
 
+
+
+
 // -----------------------------
 // Add services to the container
 // -----------------------------
