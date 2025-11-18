@@ -55,6 +55,4 @@ struct AIView: View {
     }
 }
 
-#Preview {
-    AIView(userId: "Ft54PxAAAKM4hYImRQ0FLqk0gIl1")
-}
+
