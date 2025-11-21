@@ -59,5 +59,10 @@ namespace LlmApi.Services
 
             return user;
         }
+
+        public async Task<User?> GetByIdAsync(int id)
+        {
+            return await _db.Users.FindAsync(id);
+        }
     }
 }

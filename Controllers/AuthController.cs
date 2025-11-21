@@ -6,6 +6,7 @@ using LlmApi.Models;                    // User
 using LlmApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LlmApi.Controllers
 {
@@ -92,6 +93,33 @@ namespace LlmApi.Controllers
             };
 
             return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> Me()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                              ?? User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (!int.TryParse(userIdClaim, out var userId))
+                return Unauthorized();
+
+            var user = await _userService.GetByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+
+            var result = new UserInfoResponse
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                AccountCreationDate = user.AccountCreationDate,
+                LastLoginDate = user.LastLoginDate
+            };
+
+            return Ok(result);
         }
 
         // --------------------------------------------------
