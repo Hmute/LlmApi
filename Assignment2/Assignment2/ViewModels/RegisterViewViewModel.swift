@@ -19,7 +19,7 @@ class RegisterViewViewModel: ObservableObject {
     @Published var registrationSuccess = false
     @Published var isLoggedIn = false
 
-    private let baseURL = "http://localhost:5284"
+    private let baseURL = "https://assigment2-llmapi-gjdsdme2dvfhg0ff.canadacentral-01.azurewebsites.net"
 
     func register() async -> AuthResponse? {
         errMsg = ""
@@ -62,10 +62,12 @@ class RegisterViewViewModel: ObservableObject {
             }
 
             if !(200...299).contains(httpResponse.statusCode) {
-                errMsg = "Registration failed. Try again."
+                let errorText = String(data: data, encoding: .utf8) ?? "<no body>"
+                errMsg = "Server error (\(httpResponse.statusCode)): \(errorText)"
                 isLoading = false
                 return nil
             }
+
 
             let auth = try JSONDecoder().decode(AuthResponse.self, from: data)
 

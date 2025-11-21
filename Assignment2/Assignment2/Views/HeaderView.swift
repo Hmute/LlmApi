@@ -10,31 +10,35 @@ import SwiftUI
 struct HeaderView: View {
     let title: LocalizedStringKey
     let subtitle: LocalizedStringKey
-    let angle: Double
-    let backColor: Color
-    
+    var backgroundGradient: LinearGradient? = nil  // ← optional override
+
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 0)
-                .foregroundColor(backColor)
-                .rotationEffect(Angle(degrees: angle))
-            VStack {
+            // Use custom gradient if provided, otherwise default purple-blue
+            (backgroundGradient ?? LinearGradient(
+                colors: [.purple, .blue],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ))
+            .ignoresSafeArea()
+
+            VStack(spacing: 10) {
                 Text(title)
-                    .font(.system(size: 50))
-                    .foregroundColor(.white)
-                    .bold()
+                    .font(.system(size: 48, weight: .heavy, design: .rounded))
+                    .foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
+
                 Text(subtitle)
-                    .font(.system(size: 30))
-                    .foregroundColor(.white)
+                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.85))
+                    .shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 3)
             }
-            .padding(.top, 30)
+            .padding(.top, 20)
         }
-        .frame(width: UIScreen.main.bounds.width * 3,
-               height: 300)
-        .offset(y: -100)
+        .frame(height: 200) // slightly smaller
     }
 }
 
 #Preview {
-    HeaderView(title: "Todo List", subtitle: "SwiftUI is awesome", angle: 15, backColor: .blue)
+    HeaderView(title: "Todo List", subtitle: "Welcome!")
 }

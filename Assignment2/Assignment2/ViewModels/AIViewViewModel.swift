@@ -35,7 +35,7 @@ class AIViewViewModel: ObservableObject {
                 let reply = try await service.sendPrompt(prompt)
                 response = reply
             } catch {
-                errorMessage = "Error: \(error.localizedDescription)"
+                errorMessage = "Errodeedewecfqrwr: \(error.localizedDescription)"
             }
             
             isLoading = false

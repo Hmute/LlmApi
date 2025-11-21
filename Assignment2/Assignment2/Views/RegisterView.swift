@@ -4,69 +4,103 @@
 //
 //  Created by Amal Allaham on 2025-10-17.
 //
-
 import SwiftUI
+
 struct RegisterView: View {
     @StateObject var viewModel = RegisterViewViewModel()
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var session: SessionManager   // 👈 shared auth
+    @EnvironmentObject var session: SessionManager
 
     var body: some View {
-        VStack {
-            HeaderView(
-                title: "Assignment 2",
-                subtitle: "Join us!",
-                angle: 15,
-                backColor: .orange
-            )
-            
-            Form {
-                if !viewModel.errMsg.isEmpty {
-                    Text(viewModel.errMsg)
-                        .foregroundColor(.red)
-                }
-                
-                TextField("First Name", text: $viewModel.firstName)
-                    .textFieldStyle(DefaultTextFieldStyle())
-                    .autocorrectionDisabled()
-                
-                TextField("Last Name", text: $viewModel.lastName)
-                    .textFieldStyle(DefaultTextFieldStyle())
-                    .autocorrectionDisabled()
-                
-                TextField("email", text: $viewModel.email)
-                    .textFieldStyle(DefaultTextFieldStyle())
-                    .autocapitalization(.none)
-                    .autocorrectionDisabled()
-                
-                SecureField("password", text: $viewModel.password)
-                    .textFieldStyle(DefaultTextFieldStyle())
-                
-                Button("Create Account") {
-                    Task {
-                        if let auth = await viewModel.register(),
-                           viewModel.registrationSuccess {
+        NavigationStack { // ✅ required for navigation consistency
+            ZStack {
+                // Background gradient (green-teal vibe)
+                LinearGradient(colors: [.green, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
 
-                            // ✅ Update the session here
-                            session.saveSession(
-                                token: auth.token,
-                                email: auth.email
-                            )
+                VStack(spacing: 20) {
+                    // Header
+                    HeaderView(
+                        title: "Assignment 2",
+                        subtitle: "Join us!",
+                        backgroundGradient: LinearGradient(
+                            colors: [.green, .teal],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(height: 200)
+                    .padding(.bottom, 20)
 
-                            // now the app “knows” you’re logged in
-                            await MainActor.run {
-                                dismiss()   // goes back, but ContentView will now show the TabView
-                            }
+
+                    // Form card
+                    VStack(spacing: 16) {
+                        if !viewModel.errMsg.isEmpty {
+                            Text(viewModel.errMsg)
+                                .foregroundColor(.red)
+                                .fontWeight(.semibold)
+                                .multilineTextAlignment(.center)
                         }
+
+                        TextField("First Name", text: $viewModel.firstName)
+                            .padding()
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(12)
+                            .autocorrectionDisabled()
+
+                        TextField("Last Name", text: $viewModel.lastName)
+                            .padding()
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(12)
+                            .autocorrectionDisabled()
+
+                        TextField("Email", text: $viewModel.email)
+                            .padding()
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(12)
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
+
+                        SecureField("Password", text: $viewModel.password)
+                            .padding()
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(12)
+
+                        Button(action: {
+                            Task {
+                                if let auth = await viewModel.register(),
+                                   viewModel.registrationSuccess {
+                                    session.saveSession(token: auth.token, email: auth.email)
+                                    await MainActor.run { dismiss() }
+                                }
+                            }
+                        }) {
+                            Text("Create Account")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(LinearGradient(colors: [.mint, .green], startPoint: .leading, endPoint: .trailing))
+                                .cornerRadius(15)
+                                .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                        }
+
                     }
+                    .padding(24)
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(25)
+                    .padding(.horizontal)
+                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
+                    .offset(y: -50)
+
+                    Spacer()
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .padding()
             }
-            .offset(y: -50)
-            
-            Spacer()
         }
     }
+}
+
+#Preview {
+    RegisterView()
+        .environmentObject(SessionManager())
 }

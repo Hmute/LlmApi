@@ -7,12 +7,23 @@
 
 import Foundation
 struct User: Codable {
-    let id: String
+    let id: Int
     let firstName: String
     let lastName: String
     let email: String
-    let joined: TimeInterval
+    let accountCreationDate: Date
+    let lastLoginDate: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case firstName
+        case lastName
+        case email
+        case accountCreationDate
+        case lastLoginDate
+    }
 }
+
 extension User {
     func asDictionary() -> [String: Any] {
         do {

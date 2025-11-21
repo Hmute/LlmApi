@@ -6,118 +6,93 @@
 //
 import SwiftUI
 
-
 struct LoginView: View {
     @StateObject var viewModel = LoginViewViewModel()
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    @EnvironmentObject var session: SessionManager      // 👈 add this
+    @EnvironmentObject var session: SessionManager
 
     var body: some View {
-        NavigationView {
-            Group {
-                if verticalSizeClass == .regular {
-                    portraitView
-                } else {
-                    landscapeView
-                }
-            }
-        }
-    }
+        NavigationStack {  // ✅ Add NavigationStack here
+            ZStack {
+                // Background gradient
+                LinearGradient(colors: [.purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
 
+                VStack(spacing: 20) {
+                    // Cool header
+                    HeaderView(title: "AI App", subtitle: "Login")
+                        .frame(height: 250)
+                        .padding(.bottom, 20)
 
-    @ViewBuilder
-    var portraitView: some View {
-        VStack {
-            HeaderView(title: "Todo List", subtitle: "login", angle: 15, backColor: .blue)
-
-            Form {
-                if !viewModel.errMsg.isEmpty {
-                    Text(viewModel.errMsg)
-                        .foregroundColor(.red)
-                }
-
-                TextField("email", text: $viewModel.email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.none)
-                    .autocorrectionDisabled()
-
-                SecureField("password", text: $viewModel.password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-
-                Button("login") {
-                    Task {
-                        if let auth = await viewModel.login() {
-                            // ✅ Update global auth state
-                            session.saveSession(
-                                token: auth.token,
-                                email: auth.email
-                            )
-                            // No need to navigate manually — ContentView will react
+                    // Form card
+                    VStack(spacing: 16) {
+                        if !viewModel.errMsg.isEmpty {
+                            Text(viewModel.errMsg)
+                                .foregroundColor(.red)
+                                .fontWeight(.semibold)
+                                .multilineTextAlignment(.center)
                         }
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-            }
 
-            VStack {
-                Text("user")
-                NavigationLink("account") {
-                    RegisterView()
-                }
-            }
-            .padding(.bottom, 50)
+                        TextField("Email", text: $viewModel.email)
+                            .padding()
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(12)
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
 
-            Spacer()
-        }
-    }
+                        SecureField("Password", text: $viewModel.password)
+                            .padding()
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(12)
 
-    @ViewBuilder
-    var landscapeView: some View {
-        HStack(spacing: 16) {
-            HeaderView(title: "Todo List", subtitle: "login", angle: 0, backColor: .blue)
-                .frame(width: 250, height: 300)
-                .cornerRadius(20)
-
-            VStack {
-                Form {
-                    if !viewModel.errMsg.isEmpty {
-                        Text(viewModel.errMsg)
-                            .foregroundColor(.red)
-                    }
-
-                    TextField("email", text: $viewModel.email)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .autocapitalization(.none)
-                        .autocorrectionDisabled()
-
-                    SecureField("password", text: $viewModel.password)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-
-                    Button("login") {
-                        Task {
-                            if let auth = await viewModel.login() {
-                                session.saveSession(
-                                    token: auth.token,
-                                    email: auth.email
-                                )
+                        Button(action: {
+                            Task {
+                                if let auth = await viewModel.login() {
+                                    session.saveSession(token: auth.token, email: auth.email)
+                                }
                             }
+                        }) {
+                            Text("Login")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(LinearGradient(colors: [.pink, .purple], startPoint: .leading, endPoint: .trailing))
+                                .cornerRadius(15)
+                                .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                        }
+
+                    }
+                    .padding(24)
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(25)
+                    .padding(.horizontal)
+                    .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
+
+                    // Bottom navigation
+                    VStack(spacing: 8) {
+                        Text("New User?")
+                            .foregroundColor(.white.opacity(0.8))
+
+                        NavigationLink(destination: RegisterView()) {
+                            Text("Create Account")
+                                .foregroundColor(.white)
+                                .bold()
+                                .padding(.vertical, 8)
+                                .padding(.horizontal, 16)
+                                .background(Color.purple.opacity(0.7))
+                                .cornerRadius(12)
                         }
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                }
+                    .padding(.top, 20)
 
-                VStack {
-                    Text("user")
-                    NavigationLink("account") {
-                        RegisterView()
-                    }
+                    Spacer()
                 }
-                .padding(.bottom, 30)
             }
-            .frame(maxWidth: .infinity)
         }
-        .padding()
     }
+}
+
+#Preview {
+    LoginView()
+        .environmentObject(SessionManager())
 }

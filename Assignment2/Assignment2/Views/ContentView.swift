@@ -10,11 +10,13 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var viewModel = ContentViewViewModel()
     @EnvironmentObject var session: SessionManager
-
+    
     
     var body: some View {
         Group {
-            if session.isSignedIn {
+            if !session.hasLoadedSession {
+                ProgressView("Checking session…") // very brief
+            } else if session.isSignedIn {
                 accountView
             } else {
                 LoginView()
@@ -22,9 +24,8 @@ struct ContentView: View {
         }
         .onAppear {
             session.loadSession()
-        }
-    }
-    
+        }    
+     }
     @ViewBuilder
     var accountView: some View {
         TabView {
@@ -38,9 +39,14 @@ struct ContentView: View {
                     Label("AI", systemImage: "star.fill")
                 }
             
-            ProfileView()
+            ProfileView(session: session)
                 .tabItem {
                     Label("Profile", systemImage: "person.circle")
+                }
+            
+            AboutView()
+                .tabItem {
+                    Label("About", systemImage: "info.circle")
                 }
         }
     }

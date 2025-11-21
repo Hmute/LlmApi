@@ -15,7 +15,7 @@ class LoginViewViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isLoggedIn = false   // can be kept if you want local UI state
 
-    private let baseURL = "http://localhost:5284"
+    private let baseURL = "https://assigment2-llmapi-gjdsdme2dvfhg0ff.canadacentral-01.azurewebsites.net"
 
     func login() async -> AuthResponse? {
         errMsg = ""
