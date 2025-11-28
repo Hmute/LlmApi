@@ -1,35 +1,30 @@
-//
-//  AIView.swift
-//  Assignment2
-//
-
 import SwiftUI
 
 struct AIView: View {
-    @StateObject var viewModel: AIViewViewModel
     @EnvironmentObject var session: SessionManager
+    @StateObject private var viewModel: AIViewViewModel
 
     init(userId: String) {
-        self._viewModel = StateObject(
-            wrappedValue: AIViewViewModel(userId: userId, session: SessionManager())
+        _viewModel = StateObject(
+            wrappedValue: AIViewViewModel(userId: userId, session: nil)
         )
     }
 
     var body: some View {
         ZStack {
-            // Background gradient
-            LinearGradient(colors: [.indigo, .purple, .pink], startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(colors: [.indigo, .purple, .pink],
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing)
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
-                // Header
+
                 Text("Ask AI")
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
                     .foregroundColor(.white)
                     .shadow(radius: 5)
                     .padding(.top, 40)
 
-                // AI input card
                 VStack(spacing: 15) {
                     TextField("Type your question here…", text: $viewModel.prompt)
                         .padding()
@@ -52,7 +47,7 @@ struct AIView: View {
                                 )
                             )
                             .cornerRadius(15)
-                            .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                            .shadow(color: .black.opacity(0.2), radius: 8)
                     }
                     .disabled(viewModel.prompt.isEmpty)
 
@@ -76,16 +71,22 @@ struct AIView: View {
                             .cornerRadius(12)
                     }
                     .frame(maxHeight: 300)
+
                 }
                 .padding()
                 .background(.ultraThinMaterial)
                 .cornerRadius(25)
                 .padding(.horizontal)
-                .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
+                .shadow(color: .black.opacity(0.2), radius: 10)
 
                 Spacer()
             }
             .padding(.bottom, 30)
+        }
+        .onAppear {
+            if viewModel.session == nil {
+                viewModel.attachSession(session)
+            }
         }
     }
 }

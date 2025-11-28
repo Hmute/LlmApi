@@ -1,41 +1,48 @@
-//
-//  AIViewViewModel.swift
-//  Assignment2
-//
-
 import SwiftUI
 import Combine
 
 @MainActor
 class AIViewViewModel: ObservableObject {
-    private let session: SessionManager
-    // Existing requirement: keep userId
+    
+    private(set) var session: SessionManager?
     private let userId: String
     
-    // New AI properties
     @Published var prompt: String = ""
     @Published var response: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String = ""
     
-    private let service = ChatService()
-    
-    init(userId: String, session: SessionManager) {
+    private var service: ChatService?
+
+    init(userId: String, session: SessionManager?) {
         self.userId = userId
         self.session = session
-
+        
+        if let session = session {
+            self.service = ChatService(session: session)
+        }
+    }
+    
+    func attachSession(_ session: SessionManager) {
+        self.session = session
+        self.service = ChatService(session: session)
     }
     
     func askAI() {
+        guard let service = service else {
+            errorMessage = "Session missing — please log in again."
+            return
+        }
+        
         Task {
             isLoading = true
             errorMessage = ""
-            service.token = session.token
+            
             do {
                 let reply = try await service.sendPrompt(prompt)
                 response = reply
             } catch {
-                errorMessage = "Errodeedewecfqrwr: \(error.localizedDescription)"
+                errorMessage = "⚠️ Error: \(error.localizedDescription)"
             }
             
             isLoading = false

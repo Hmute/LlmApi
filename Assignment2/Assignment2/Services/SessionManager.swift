@@ -8,22 +8,23 @@
 
 import Foundation
 import Combine
-
 import SwiftUI
 
 final class SessionManager: ObservableObject {
     @Published var isSignedIn: Bool = false
     @Published var currentUserEmail: String = ""
-    @Published var token: String = ""
+    @Published var token: String? = nil
     @Published var hasLoadedSession: Bool = false
 
     func loadSession() {
-        if let token = UserDefaults.standard.string(forKey: "authToken"),
-           let email = UserDefaults.standard.string(forKey: "userEmail") {
-            self.token = token
-            self.currentUserEmail = email
+        if let storedToken = UserDefaults.standard.string(forKey: "authToken"),
+           let storedEmail = UserDefaults.standard.string(forKey: "userEmail") {
+            self.token = storedToken
+            self.currentUserEmail = storedEmail
             self.isSignedIn = true
         } else {
+            self.token = nil
+            self.currentUserEmail = ""
             self.isSignedIn = false
         }
         self.hasLoadedSession = true
@@ -38,7 +39,7 @@ final class SessionManager: ObservableObject {
     }
 
     func signOut() {
-        token = ""
+        token = nil
         currentUserEmail = ""
         isSignedIn = false
         UserDefaults.standard.removeObject(forKey: "authToken")

@@ -1,46 +1,50 @@
 //
 //  ProfileView.swift
-//  TodoListApp
-//
-//  Created by Mitchell MacDonald on 2025-10-17.
+//  Assignment2
 //
 
 import SwiftUI
+
 struct ProfileView: View {
     @EnvironmentObject var session: SessionManager
-    @StateObject private var viewModel: ProfileViewViewModel
-
-    init(session: SessionManager) {
-        _viewModel = StateObject(wrappedValue: ProfileViewViewModel(session: session))
-    }
+    @StateObject private var viewModel = ProfileViewViewModel()
 
     var body: some View {
         NavigationStack {
             VStack {
+                
+                // USER LOADED
                 if let user = viewModel.user {
                     profile(user: user)
+                
+                // ERROR STATE
                 } else if !viewModel.errorMessage.isEmpty {
-                    Text(viewModel.errorMessage)
+                    Text("Error: \(viewModel.errorMessage)")
                         .foregroundColor(.red)
                         .multilineTextAlignment(.center)
                         .padding()
+
                     Button("Retry") {
                         viewModel.fetchUser()
                     }
                     .padding()
+
+                // LOADING STATE
                 } else {
                     ProgressView("Loading profile…")
-                        .progressViewStyle(CircularProgressViewStyle())
                         .padding()
                 }
             }
             .navigationTitle("Profile")
             .onAppear {
-                viewModel.fetchUser() // will see correct session.token
+                // Attach real environment session to ViewModel
+                viewModel.attachSession(session)
+                viewModel.fetchUser()
             }
         }
     }
 
+    // MARK: - Profile UI
     @ViewBuilder
     func profile(user: User) -> some View {
         VStack(spacing: 20) {
@@ -54,22 +58,31 @@ struct ProfileView: View {
                 HStack { Text("Name:").bold(); Text("\(user.firstName) \(user.lastName)") }
                 HStack { Text("Email:").bold(); Text(user.email) }
                 HStack {
-                        Text("Member since:").bold()
-                        Text(user.accountCreationDate.formatted(date: .abbreviated, time: .shortened))
-                    }
+                    Text("Member since:").bold()
+                    Text(user.accountCreationDate.formatted(date: .abbreviated, time: .shortened))
+                }
                 HStack {
-                        Text("Last login:").bold()
-                        Text(user.lastLoginDate.formatted(date: .abbreviated, time: .shortened))
+                    Text("Last login:").bold()
+                    if let last = user.lastLoginDate {
+                        Text(last.formatted(date: .abbreviated, time: .shortened))
+                    } else {
+                        Text("Never")
+                            .foregroundColor(.gray)
                     }
-                
+                }
             }
             .padding()
 
             Button("Logout") {
                 viewModel.logout()
             }
-            .tint(.red)
+            .foregroundColor(.red)
             .padding()
         }
     }
+}
+
+#Preview {
+    ProfileView()
+        .environmentObject(SessionManager())
 }

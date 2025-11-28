@@ -39,7 +39,7 @@ struct ContentView: View {
                     Label("AI", systemImage: "star.fill")
                 }
             
-            ProfileView(session: session)
+            ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.circle")
                 }

@@ -1,25 +1,40 @@
 //
 //  ProfileViewViewModel.swift
-//  TodoListApp
+//  Assignment2
 //
-//  Created by Mitchell MacDonald on 2025-10-17.
-//
-import Foundation
+
+import SwiftUI
 import Combine
+import Foundation
+
+@MainActor
 class ProfileViewViewModel: ObservableObject {
+    
     @Published var user: User?
     @Published var errorMessage: String = ""
     
-    private var cancellables = Set<AnyCancellable>()
-    private let session: SessionManager
+    private var session: SessionManager? = nil
 
-    init(session: SessionManager) {
+    init() { }
+
+    // Attach the REAL environment session from ProfileView
+    func attachSession(_ session: SessionManager) {
         self.session = session
     }
 
-    
+    // Logout
+    func logout() {
+        session?.signOut()
+    }
+
+    // MARK: - Fetch User (/api/Auth/me)
     func fetchUser() {
-        guard !session.token.isEmpty else {
+        guard let session = session else {
+            errorMessage = "Session missing"
+            return
+        }
+
+        guard let token = session.token, !token.isEmpty else {
             self.errorMessage = "User not authenticated"
             self.user = nil
             return
@@ -33,57 +48,81 @@ class ProfileViewViewModel: ObservableObject {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("Bearer \(session.token)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
-        // Custom decoder that handles fractional seconds
+        // MARK: - JSON Decoder (Handles Microsecond+ Dates)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
-            let dateStr = try container.decode(String.self)
+            var dateStr = try container.decode(String.self)
 
-            // Try ISO8601 with fractional seconds
-            let isoFormatter = ISO8601DateFormatter()
-            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            if let date = isoFormatter.date(from: dateStr) {
-                return date
+            // Handle null dates explicitly
+            if dateStr == "null" {
+                throw DecodingError.valueNotFound(Date.self,
+                    .init(codingPath: decoder.codingPath,
+                          debugDescription: "Null date"))
             }
 
-            // Fallback: use DateFormatter for precise fractional seconds
-            let fallbackFormatter = DateFormatter()
-            fallbackFormatter.locale = Locale(identifier: "en_US_POSIX")
-            fallbackFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"
-            if let date = fallbackFormatter.date(from: dateStr) {
+            // Append Z if timezone missing
+            if !dateStr.hasSuffix("Z") {
+                dateStr.append("Z")
+            }
+
+            // Handle fractional seconds > 6 digits
+            if let dotIndex = dateStr.firstIndex(of: ".") {
+                let start = dateStr.index(after: dotIndex)
+                let fractional = dateStr[start...].prefix { $0.isWholeNumber }
+
+                if fractional.count > 6 {
+                    // Truncate to 6 fractional digits (max Swift supports)
+                    let truncated = fractional.prefix(6)
+                    let end = dateStr.index(start, offsetBy: fractional.count)
+                    dateStr.replaceSubrange(start..<end, with: truncated)
+                }
+            }
+
+            // Decode using ISO8601 with fractional seconds
+            let iso = ISO8601DateFormatter()
+            iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+            if let date = iso.date(from: dateStr) {
                 return date
             }
 
             throw DecodingError.dataCorruptedError(
                 in: container,
-                debugDescription: "Cannot decode date string \(dateStr)"
+                debugDescription: "Invalid date format: \(dateStr)"
             )
         }
 
+        // MARK: - Network Request
+        Task {
+            do {
+                let (data, response) = try await URLSession.shared.data(for: request)
 
-        URLSession.shared.dataTaskPublisher(for: request)
-            .map(\.data)
-            .decode(type: User.self, decoder: decoder)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                if case let .failure(error) = completion {
-                    self.errorMessage = "Failed to fetch profile: \(error.localizedDescription)"
-                    self.user = nil
+                guard let http = response as? HTTPURLResponse else {
+                    self.errorMessage = "Invalid server response"
+                    return
                 }
-            } receiveValue: { user in
-                self.user = user
+
+                print("🌐 /Auth/me Status:", http.statusCode)
+                print("🔍 RAW RESPONSE:", String(data: data, encoding: .utf8) ?? "<non-utf8>")
+
+                if http.statusCode != 200 {
+                    let raw = String(data: data, encoding: .utf8) ?? "<no body>"
+                    self.errorMessage = "HTTP \(http.statusCode): \(raw)"
+                    return
+                }
+
+                // Decode the User model
+                let fetchedUser = try decoder.decode(User.self, from: data)
+                self.user = fetchedUser
                 self.errorMessage = ""
+
+            } catch {
+                self.errorMessage = "The data couldn’t be read because it isn’t in the correct format."
+                print("❌ DECODE ERROR:", error)
             }
-            .store(in: &cancellables)
-    }
-
-
-
-    func logout() {
-        session.signOut()
-        self.user = nil
+        }
     }
 }
-
